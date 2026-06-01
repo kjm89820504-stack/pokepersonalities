@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>포켓몬 성격 테스트 | Poke Personalities</title>
+  <style>
+    :root {
+      --ink: #27313a;
+      --deep: #263b46;
+      --forest: #536f58;
+      --moss: #8d9c5f;
+      --gold: #f0cc52;
+      --leaf: #d88428;
+      --redleaf: #b84a2f;
+      --cream: #fff4c7;
+      --paper: #fff9df;
+      --shadow: rgba(36, 41, 35, 0.28);
+      --line: #314452;
+      --sky: #7e9ca1;
+      --roof: #354556;
+      --wood: #8b4d29;
+      --white: #fffdf0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+      color: var(--ink);
+      overflow-x: hidden;
+      background:
+        linear-gradient(180deg, rgba(70, 102, 92, 0.82) 0%, rgba(239, 188, 67, 0.9) 43%, rgba(217, 121, 42, 0.93) 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -5;
+      background:
+        radial-gradient(circle at 12% 16%, rgba(255, 222, 88, 0.55) 0 3px, transparent 4px),
+        radial-gradient(circle at 22% 70%, rgba(176, 74, 41, 0.42) 0 4px, transparent 5px),
+        radial-gradient(circle at 75% 22%, rgba(255, 218, 71, 0.5) 0 3px, transparent 4px),
+        radial-gradient(circle at 88% 76%, rgba(184, 73, 47, 0.38) 0 4px, transparent 5px),
+        linear-gradient(135deg, rgba(83, 111, 88, 0.8), rgba(248, 207, 76, 0.35) 42%, rgba(204, 99, 39, 0.8));
+      background-size: 70px 70px, 90px 90px, 80px 80px, 110px 110px, cover;
+      image-rendering: pixelated;
+    }
+
+    .pixel-sky {
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      pointer-events: none;
+      opacity: 0.8;
+      background:
+        linear-gradient(90deg, transparent 0 8px, rgba(255, 227, 100, 0.16) 8px 12px, transparent 12px 24px),
+        linear-gradient(0deg, transparent 0 8px, rgba(87, 113, 91, 0.11) 8px 12px, transparent 12px 24px);
+      background-size: 24px 24px;
+      mix-blend-mode: soft-light;
+    }
+
+    .trees {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: -18px;
+      height: 230px;
+      z-index: -3;
+      pointer-events: none;
+      background:
+        linear-gradient(135deg, transparent 0 42%, rgba(99, 79, 32, 0.45) 42% 46%, transparent 46%) 4% 100% / 210px 180px no-repeat,
+        linear-gradient(45deg, transparent 0 42%, rgba(99, 79, 32, 0.45) 42% 46%, transparent 46%) 11% 100% / 210px 180px no-repeat,
+        linear-gradient(135deg, transparent 0 42%, rgba(99, 79, 32, 0.38) 42% 46%, transparent 46%) 82% 100% / 260px 210px no-repeat,
+        linear-gradient(45deg, transparent 0 42%, rgba(99, 79, 32, 0.38) 42% 46%, transparent 46%) 93% 100% / 260px 210px no-repeat;
+    }
+
+    .trees::before,
+    .trees::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 380px;
+      height: 245px;
+      clip-path: polygon(50% 0, 62% 18%, 58% 18%, 72% 39%, 66% 39%, 83% 67%, 71% 67%, 95% 100%, 5% 100%, 29% 67%, 17% 67%, 34% 39%, 28% 39%, 42% 18%, 38% 18%);
+      background:
+        linear-gradient(180deg, #f2cc3d 0%, #e6a234 45%, #cf6c2d 77%, #9d492d 100%);
+      filter: drop-shadow(16px 12px 0 rgba(80, 70, 37, 0.15));
+      image-rendering: pixelated;
+    }
+
+    .trees::before {
+      left: -72px;
+    }
+
+    .trees::after {
+      right: -105px;
+      transform: scale(1.08);
+      opacity: 0.95;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 30px 0 60px;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 560px;
+      border: 4px solid rgba(49, 68, 82, 0.92);
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow:
+        0 26px 60px var(--shadow),
+        inset 0 0 0 5px rgba(255, 246, 198, 0.2);
+      background:
+        linear-gradient(180deg, rgba(96, 126, 113, 0.88) 0 30%, rgba(237, 204, 82, 0.9) 31% 58%, rgba(228, 146, 46, 0.88) 100%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.055) 0 2px, transparent 2px 7px),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.055) 0 2px, transparent 2px 7px);
+      image-rendering: pixelated;
+      opacity: 0.36;
+      pointer-events: none;
+    }
+
+    .temple {
+      position: absolute;
+      right: 70px;
+      top: 22px;
+      width: 360px;
+      height: 220px;
+      opacity: 0.98;
+      filter: drop-shadow(11px 16px 0 rgba(38, 49, 58, 0.24));
+    }
+
+    .temple .roof {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      top: 0;
+      height: 84px;
+      background:
+        linear-gradient(180deg, #2d3b4e 0%, #4d5c70 68%, #202b37 70% 100%);
+      clip-path: polygon(8% 0, 92% 0, 100% 72%, 94% 100%, 6% 100%, 0 72%);
+      border: 3px solid rgba(19, 28, 36, 0.45);
+    }
+
+    .temple .roof::after {
+      content: "";
+      position: absolute;
+      inset: 14px 12px;
+      background: repeating-linear-gradient(90deg, rgba(196, 209, 219, 0.22) 0 8px, transparent 8px 17px);
+      opacity: 0.75;
+    }
+
+    .temple .body {
+      position: absolute;
+      left: 54px;
+      right: 54px;
+      top: 78px;
+      height: 118px;
+      background: #e3d8a5;
+      border: 5px solid #c66d32;
+      box-shadow: inset 0 -20px 0 #cfd6cf;
+    }
+
+    .temple .door {
+      position: absolute;
+      left: 139px;
+      top: 111px;
+      width: 82px;
+      height: 86px;
+      background: #2d3840;
+      border: 5px solid #7f472a;
+    }
+
+    .temple .pillar {
+      position: absolute;
+      top: 92px;
+      width: 18px;
+      height: 100px;
+      background: #8b4d29;
+    }
+
+    .temple .pillar.left { left: 68px; }
+    .temple .pillar.right { right: 68px; }
+
+    .ground-leaves {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 17% 28%, #f5d647 0 5px, transparent 6px),
+        radial-gradient(circle at 28% 50%, #d9812b 0 5px, transparent 6px),
+        radial-gradient(circle at 57% 72%, #f3cc47 0 5px, transparent 6px),
+        radial-gradient(circle at 69% 39%, #c7582e 0 4px, transparent 5px),
+        radial-gradient(circle at 88% 59%, #e2a132 0 5px, transparent 6px);
+      background-size: 54px 54px, 65px 65px, 58px 58px, 70px 70px, 48px 48px;
+      opacity: 0.64;
+      pointer-events: none;
+    }
+
+    header {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 34px;
+      padding: 48px 44px 34px;
+      align-items: end;
+    }
+
+    .title-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 8px 12px;
+      border: 3px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 249, 223, 0.88);
+      box-shadow: 5px 5px 0 rgba(49, 68, 82, 0.24);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    h1 {
+      margin: 18px 0 14px;
+      color: #fff8d0;
+      font-size: clamp(38px, 7vw, 76px);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      text-shadow:
+        4px 4px 0 #314452,
+        8px 8px 0 rgba(49, 68, 82, 0.24);
+    }
+
+    .subtitle {
+      max-width: 620px;
+      margin: 0;
+      padding: 18px 20px;
+      border: 4px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 249, 223, 0.9);
+      box-shadow: 8px 8px 0 rgba(49, 68, 82, 0.18);
+      color: #394551;
+      font-size: 17px;
+      line-height: 1.7;
+      font-weight: 700;
+      word-break: keep-all;
+    }
+
+    .start-panel {
+      border: 4px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 253, 240, 0.93);
+      box-shadow: 10px 10px 0 rgba(49, 68, 82, 0.2);
+      padding: 22px;
+      transform: translateY(10px);
+    }
+
+    .mini-card {
+      min-height: 180px;
+      border: 3px solid #526371;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, #8ca592 0 42%, #f0cc52 43% 65%, #dc8a2d 66% 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mini-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0 6px, transparent 6px 16px);
+      opacity: 0.4;
+    }
+
+    .pixel-ball {
+      position: absolute;
+      left: 50%;
+      bottom: 20px;
+      width: 80px;
+      height: 80px;
+      transform: translateX(-50%);
+      border: 5px solid #2f3d48;
+      border-radius: 50%;
+      background:
+        linear-gradient(180deg, #d9533f 0 46%, #2f3d48 47% 53%, #fff5d8 54% 100%);
+      box-shadow: 6px 7px 0 rgba(47, 61, 72, 0.25);
+    }
+
+    .pixel-ball::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 22px;
+      height: 22px;
+      transform: translate(-50%, -50%);
+      border: 4px solid #2f3d48;
+      border-radius: 50%;
+      background: #fffdf0;
+    }
+
+    .panel-title {
+      margin: 15px 0 8px;
+      font-weight: 950;
+      font-size: 21px;
+      color: var(--deep);
+    }
+
+    .panel-copy {
+      margin: 0 0 18px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: #53606b;
+      font-weight: 700;
+      word-break: keep-all;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 4px solid #2f3d48;
+      border-radius: 15px;
+      padding: 13px 18px;
+      background: #fff4c7;
+      color: #2f3d48;
+      font-size: 15px;
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 5px 6px 0 rgba(47, 61, 72, 0.34);
+      transition: transform 0.14s ease, box-shadow 0.14s ease, background 0.14s ease;
+      user-select: none;
+    }
+
+    .btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 8px 0 rgba(47, 61, 72, 0.3);
+      background: #ffe88f;
+    }
+
+    .btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 3px 0 rgba(47, 61, 72, 0.34);
+    }
+
+    .btn.primary {
+      width: 100%;
+      background: linear-gradient(180deg, #ffe481 0%, #e99735 100%);
+    }
+
+    .btn.dark {
+      background: #314452;
+      color: #fff8d0;
+    }
+
+    .btn.ghost {
+      background: rgba(255, 253, 240, 0.86);
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+      margin: -8px 44px 44px;
+    }
+
+    .game-window {
+      display: none;
+      border: 4px solid var(--line);
+      border-radius: 26px;
+      background: rgba(255, 249, 223, 0.94);
+      box-shadow: 12px 14px 0 rgba(49, 68, 82, 0.22);
+      overflow: hidden;
+    }
+
+    .game-window.active {
+      display: block;
+      animation: popIn 0.28s ease both;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .window-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      background: linear-gradient(180deg, #435a69 0%, #2f4150 100%);
+      color: #fff8d0;
+      border-bottom: 4px solid var(--line);
+    }
+
+    .dots {
+      display: inline-flex;
+      gap: 7px;
+      flex: 0 0 auto;
+    }
+
+    .dots span {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 249, 223, 0.75);
+      border-radius: 50%;
+      background: #e89a33;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.18);
+    }
+
+    .dots span:nth-child(2) { background: #e0c54f; }
+    .dots span:nth-child(3) { background: #7f9d6d; }
+
+    .window-title {
+      min-width: 0;
+      font-size: 15px;
+      font-weight: 950;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .progress-wrap {
+      width: 170px;
+      height: 18px;
+      padding: 3px;
+      border: 2px solid rgba(255, 249, 223, 0.9);
+      border-radius: 999px;
+      background: rgba(22, 33, 40, 0.35);
+    }
+
+    .progress {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ffe481, #d67b2b);
+      transition: width 0.28s ease;
+    }
+
+    .question-area {
+      display: grid;
+      grid-template-columns: 1.04fr 0.96fr;
+      gap: 26px;
+      padding: 28px;
+      align-items: stretch;
+    }
+
+    .question-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 430px;
+      border: 3px solid rgba(49, 68, 82, 0.7);
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(255, 253, 240, 0.96), rgba(255, 244, 199, 0.93));
+      padding: 26px;
+    }
+
+    .q-number {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 16px;
+      padding: 7px 10px;
+      border: 3px solid #314452;
+      border-radius: 999px;
+      background: #e9a139;
+      color: #fffdf0;
+      font-size: 13px;
+      font-weight: 950;
+      box-shadow: 3px 4px 0 rgba(49, 68, 82, 0.22);
+    }
+
+    .question-text {
+      margin: 0;
+      color: #27313a;
+      font-size: clamp(24px, 4vw, 38px);
+      line-height: 1.25;
+      letter-spacing: -0.04em;
+      font-weight: 950;
+      word-break: keep-all;
+    }
+
+    .question-hint {
+      margin: 15px 0 0;
+      color: #5d675a;
+      font-size: 15px;
+      line-height: 1.65;
+      font-weight: 750;
+      word-break: keep-all;
+    }
+
+    .choice-grid {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .choice {
+      width: 100%;
+      text-align: left;
+      border: 3px solid #314452;
+      border-radius: 18px;
+      padding: 17px 18px;
+      background: rgba(255, 253, 240, 0.95);
+      box-shadow: 5px 5px 0 rgba(49, 68, 82, 0.15);
+      cursor: pointer;
+      transition: transform 0.14s ease, box-shadow 0.14s ease, background 0.14s ease;
+    }
+
+    .choice:hover {
+      transform: translate(-2px, -2px);
+      background: #fff0ae;
+      box-shadow: 7px 7px 0 rgba(49, 68, 82, 0.18);
+    }
+
+    .choice strong {
+      display: block;
+      color: #263b46;
+      font-size: 17px;
+      line-height: 1.35;
+      font-weight: 950;
+      word-break: keep-all;
+    }
+
+    .choice span {
+      display: block;
+      margin-top: 5px;
+      color: #5b665f;
+      font-size: 13px;
+      line-height: 1.55;
+      font-weight: 700;
+      word-break: keep-all;
+    }
+
+    .scene-card {
+      position: relative;
+      min-height: 430px;
+      border: 3px solid rgba(49, 68, 82, 0.7);
+      border-radius: 22px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, #819b98 0 34%, #f1cf52 35% 62%, #db842d 63% 100%);
+    }
+
+    .scene-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 16% 26%, #e9c83f 0 6px, transparent 7px),
+        radial-gradient(circle at 36% 65%, #c55a32 0 5px, transparent 6px),
+        radial-gradient(circle at 73% 47%, #f0c748 0 6px, transparent 7px),
+        radial-gradient(circle at 86% 78%, #c86a2c 0 6px, transparent 7px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 6px, transparent 6px 18px);
+      background-size: 56px 56px, 67px 67px, 61px 61px, 72px 72px, 28px 28px;
+      opacity: 0.75;
+    }
+
+    .scene-card::after {
+      content: "";
+      position: absolute;
+      left: 32px;
+      bottom: -8px;
+      width: 170px;
+      height: 170px;
+      clip-path: polygon(50% 0, 64% 22%, 60% 22%, 75% 48%, 68% 48%, 90% 84%, 75% 84%, 100% 100%, 0 100%, 25% 84%, 10% 84%, 32% 48%, 25% 48%, 40% 22%, 36% 22%);
+      background: linear-gradient(180deg, #f1c945, #cf7a2e 66%, #9e4d2d);
+      filter: drop-shadow(10px 9px 0 rgba(49, 68, 82, 0.17));
+    }
+
+    .npc {
+      position: absolute;
+      left: 50%;
+      top: 49%;
+      width: 64px;
+      height: 84px;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(6px 8px 0 rgba(49, 68, 82, 0.25));
+    }
+
+    .npc .head {
+      position: absolute;
+      left: 16px;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      border: 4px solid #2f3d48;
+      border-radius: 50%;
+      background: #f4c08d;
+    }
+
+    .npc .cap {
+      position: absolute;
+      left: 12px;
+      top: -4px;
+      width: 42px;
+      height: 20px;
+      border: 4px solid #2f3d48;
+      border-radius: 22px 22px 6px 6px;
+      background: #5f8ca0;
+    }
+
+    .npc .body {
+      position: absolute;
+      left: 12px;
+      top: 32px;
+      width: 40px;
+      height: 42px;
+      border: 4px solid #2f3d48;
+      border-radius: 10px 10px 8px 8px;
+      background: linear-gradient(90deg, #d94e39 0 35%, #f7f0c4 35% 62%, #314452 62%);
+    }
+
+    .npc .feet {
+      position: absolute;
+      left: 10px;
+      bottom: 0;
+      width: 44px;
+      height: 13px;
+      border-radius: 8px;
+      background: #2f3d48;
+    }
+
+    .result-area {
+      display: none;
+      padding: 28px;
+    }
+
+    .result-area.active {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 26px;
+      align-items: stretch;
+      animation: popIn 0.28s ease both;
+    }
+
+    .result-card {
+      position: relative;
+      min-height: 540px;
+      border: 5px solid #314452;
+      border-radius: 28px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, #6e8d86 0 25%, #efcc51 26% 57%, #df862f 58% 100%);
+      box-shadow: 11px 12px 0 rgba(49, 68, 82, 0.22);
+    }
+
+    .result-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 24%, rgba(255, 237, 116, 0.8) 0 7px, transparent 8px),
+        radial-gradient(circle at 82% 28%, rgba(194, 72, 43, 0.55) 0 7px, transparent 8px),
+        radial-gradient(circle at 70% 73%, rgba(255, 231, 100, 0.65) 0 8px, transparent 9px),
+        radial-gradient(circle at 31% 82%, rgba(179, 73, 42, 0.48) 0 7px, transparent 8px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 6px, transparent 6px 20px);
+      background-size: 74px 74px, 91px 91px, 82px 82px, 65px 65px, 24px 24px;
+      opacity: 0.72;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 26px;
+    }
+
+    .badge {
+      display: inline-flex;
+      width: fit-content;
+      padding: 8px 11px;
+      border: 3px solid #314452;
+      border-radius: 999px;
+      background: rgba(255, 253, 240, 0.93);
+      color: #314452;
+      font-weight: 950;
+      font-size: 13px;
+      box-shadow: 4px 4px 0 rgba(49, 68, 82, 0.18);
+    }
+
+    .monster-icon {
+      display: grid;
+      place-items: center;
+      margin: 26px auto 18px;
+      width: 180px;
+      height: 180px;
+      border: 5px solid #314452;
+      border-radius: 38px;
+      background: rgba(255, 253, 240, 0.92);
+      box-shadow: 8px 9px 0 rgba(49, 68, 82, 0.25);
+      font-size: 92px;
+      text-shadow: 5px 5px 0 rgba(49, 68, 82, 0.12);
+    }
+
+    .result-name {
+      margin: 0;
+      text-align: center;
+      color: #fff8d0;
+      font-size: 52px;
+      letter-spacing: -0.06em;
+      line-height: 1;
+      text-shadow: 4px 4px 0 #314452, 7px 7px 0 rgba(49, 68, 82, 0.2);
+    }
+
+    .result-one {
+      margin: 14px auto 0;
+      max-width: 330px;
+      padding: 13px 15px;
+      border: 3px solid #314452;
+      border-radius: 16px;
+      background: rgba(255, 253, 240, 0.92);
+      text-align: center;
+      color: #35414a;
+      font-size: 16px;
+      line-height: 1.55;
+      font-weight: 850;
+      word-break: keep-all;
+    }
+
+    .card-footer {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .type-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 68px;
+      padding: 8px 10px;
+      border: 3px solid #314452;
+      border-radius: 999px;
+      background: #fff4c7;
+      color: #314452;
+      font-size: 13px;
+      font-weight: 950;
+      box-shadow: 3px 4px 0 rgba(49, 68, 82, 0.18);
+    }
+
+    .result-info {
+      border: 4px solid #314452;
+      border-radius: 26px;
+      background: rgba(255, 253, 240, 0.95);
+      box-shadow: 10px 11px 0 rgba(49, 68, 82, 0.18);
+      padding: 26px;
+    }
+
+    .result-info h2 {
+      margin: 0 0 12px;
+      color: #27313a;
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -0.055em;
+      line-height: 1.15;
+    }
+
+    .result-info p {
+      margin: 0;
+      color: #4f5d55;
+      font-size: 16px;
+      line-height: 1.78;
+      font-weight: 750;
+      word-break: keep-all;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .info-box {
+      border: 3px solid rgba(49, 68, 82, 0.7);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fff4c7;
+    }
+
+    .info-box h3 {
+      margin: 0 0 8px;
+      color: #314452;
+      font-size: 15px;
+      font-weight: 950;
+    }
+
+    .info-box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #53605a;
+      font-size: 14px;
+      line-height: 1.65;
+      font-weight: 750;
+      word-break: keep-all;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .notice {
+      margin-top: 18px;
+      padding: 13px 15px;
+      border: 3px dashed rgba(49, 68, 82, 0.45);
+      border-radius: 15px;
+      color: #67715d;
+      font-size: 12px;
+      line-height: 1.55;
+      font-weight: 700;
+      word-break: keep-all;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      z-index: 20;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      border: 3px solid #314452;
+      border-radius: 999px;
+      padding: 11px 15px;
+      background: #fff4c7;
+      color: #314452;
+      font-weight: 950;
+      box-shadow: 5px 6px 0 rgba(49, 68, 82, 0.22);
+      transition: 0.22s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    footer {
+      margin-top: 26px;
+      text-align: center;
+      color: rgba(255, 253, 240, 0.9);
+      font-size: 12px;
+      font-weight: 800;
+      text-shadow: 2px 2px 0 rgba(49, 68, 82, 0.3);
+      word-break: keep-all;
+    }
+
+    @media (max-width: 920px) {
+      header,
+      .question-area,
+      .result-area.active {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 34px 22px 24px;
+      }
+
+      main {
+        margin: 0 18px 28px;
+      }
+
+      .temple {
+        right: -70px;
+        opacity: 0.45;
+      }
+
+      .start-panel {
+        transform: none;
+      }
+
+      .result-card {
+        min-height: 480px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .wrap {
+        width: min(100% - 18px, 1120px);
+        padding-top: 9px;
+      }
+
+      .hero {
+        border-radius: 18px;
+      }
+
+      .window-bar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .progress-wrap {
+        width: 100%;
+      }
+
+      .question-area,
+      .result-area {
+        padding: 16px;
+      }
+
+      .question-box,
+      .scene-card {
+        min-height: auto;
+      }
+
+      .scene-card {
+        height: 260px;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .monster-icon {
+        width: 150px;
+        height: 150px;
+        font-size: 76px;
+      }
+
+      .result-name {
+        font-size: 42px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="pixel-sky" aria-hidden="true"></div>
+  <div class="trees" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <section class="hero" aria-label="포켓몬 성격 테스트 메인">
+      <div class="ground-leaves" aria-hidden="true"></div>
+      <div class="temple" aria-hidden="true">
+        <div class="roof"></div>
+        <div class="body"></div>
+        <div class="door"></div>
+        <div class="pillar left"></div>
+        <div class="pillar right"></div>
+      </div>
+
+      <header>
+        <div>
+          <div class="title-kicker">🍂 가을빛 도감 테스트</div>
+          <h1>포켓몬<br />성격 연구소</h1>
+          <p class="subtitle">
+            8개의 짧은 질문에 답하면, 당신의 성격과 가장 어울리는 포켓몬을 추천해드립니다.
+            결과는 카드 이미지처럼 저장할 수 있습니다.
+          </p>
+        </div>
+
+        <aside class="start-panel">
+          <div class="mini-card">
+            <div class="pixel-ball" aria-hidden="true"></div>
+          </div>
+          <div class="panel-title">나와 어울리는 포켓몬은?</div>
+          <p class="panel-copy">
+            선택지를 누르며 테스트를 진행하세요. 마지막에는 성격 설명, 장점, 어울리는 타입까지 한 번에 보여줍니다.
+          </p>
+          <button class="btn primary" id="startBtn" type="button">테스트 시작하기</button>
+        </aside>
+      </header>
+
+      <main>
+        <section class="game-window" id="quizWindow" aria-label="질문 선택형 테스트">
+          <div class="window-bar">
+            <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="window-title" id="windowTitle">질문을 선택해 주세요</div>
+            <div class="progress-wrap" aria-label="진행률"><div class="progress" id="progress"></div></div>
+          </div>
+
+          <div class="question-area">
+            <div class="question-box">
+              <div>
+                <div class="q-number" id="qNumber">QUESTION 01</div>
+                <p class="question-text" id="questionText"></p>
+                <p class="question-hint" id="questionHint"></p>
+              </div>
+              <button class="btn ghost" id="backBtn" type="button">이전 질문으로</button>
+            </div>
+
+            <div class="choice-grid" id="choices"></div>
+
+            <div class="scene-card" aria-hidden="true">
+              <div class="npc">
+                <div class="cap"></div>
+                <div class="head"></div>
+                <div class="body"></div>
+                <div class="feet"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="game-window" id="resultWindow" aria-label="추천 포켓몬 결과">
+          <div class="window-bar">
+            <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="window-title">결과 카드가 완성되었습니다</div>
+            <div class="progress-wrap"><div class="progress" style="width: 100%;"></div></div>
+          </div>
+
+          <div class="result-area" id="resultArea">
+            <article class="result-card" id="shareCard" aria-label="결과 공유용 카드">
+              <div class="card-inner">
+                <div class="badge">MY POKE PERSONALITY</div>
+                <div>
+                  <div class="monster-icon" id="monsterIcon">✨</div>
+                  <h2 class="result-name" id="resultName">이브이</h2>
+                  <p class="result-one" id="resultOne">적응력이 좋고 다양한 가능성을 가진 타입입니다.</p>
+                </div>
+                <div class="card-footer" id="typeChips"></div>
+              </div>
+            </article>
+
+            <article class="result-info">
+              <h2 id="resultTitle">당신과 어울리는 포켓몬은 이브이입니다.</h2>
+              <p id="resultDesc"></p>
+
+              <div class="info-grid">
+                <div class="info-box">
+                  <h3>성격 키워드</h3>
+                  <ul id="keywordList"></ul>
+                </div>
+                <div class="info-box">
+                  <h3>잘 어울리는 순간</h3>
+                  <ul id="momentList"></ul>
+                </div>
+              </div>
+
+              <div class="action-row">
+                <button class="btn dark" id="saveBtn" type="button">결과 카드 이미지 저장</button>
+                <button class="btn ghost" id="copyBtn" type="button">결과 문구 복사</button>
+                <button class="btn" id="restartBtn" type="button">다시 하기</button>
+              </div>
+
+              <div class="notice">
+                이 사이트는 개인 포트폴리오와 과제용으로 제작한 비공식 팬 테스트입니다. 공식 이미지 대신 CSS와 텍스트 중심으로 디자인했습니다.
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </section>
+
+    <footer>
+      Poke Personalities · Autumn Pixel Test · GitHub Pages용 단일 index.html
+    </footer>
+  </div>
+
+  <div class="toast" id="toast">완료되었습니다</div>
+
+  <script>
+    const questions = [
+      {
+        text: "쉬는 날, 가장 끌리는 계획은?",
+        hint: "평소 에너지 충전 방식에 가장 가까운 선택지를 골라주세요.",
+        choices: [
+          { title: "친구와 만나서 신나게 돌아다닌다", sub: "사람을 만나면 에너지가 살아난다", scores: { pikachu: 2, charizard: 1 } },
+          { title: "조용한 곳에서 혼자 회복한다", sub: "나만의 시간이 꼭 필요하다", scores: { snorlax: 2, bulbasaur: 1 } },
+          { title: "새로운 장소를 탐험한다", sub: "처음 가는 길이 오히려 재밌다", scores: { eevee: 2, dragonite: 1 } },
+          { title: "하던 일을 정리하고 계획을 세운다", sub: "정돈된 하루가 마음을 편하게 한다", scores: { lucario: 2, squirtle: 1 } }
+        ]
+      },
+      {
+        text: "친구가 고민을 털어놓으면 나는?",
+        hint: "정답은 없습니다. 가장 자연스러운 반응을 골라주세요.",
+        choices: [
+          { title: "바로 해결 방법을 같이 찾는다", sub: "문제는 풀어야 마음이 놓인다", scores: { lucario: 2, squirtle: 1 } },
+          { title: "끝까지 들어주고 옆에 있어준다", sub: "말보다 함께 있어주는 편이다", scores: { bulbasaur: 2, eevee: 1 } },
+          { title: "분위기를 풀어주려고 웃긴 말을 한다", sub: "무거운 공기를 바꾸고 싶다", scores: { pikachu: 2, gengar: 1 } },
+          { title: "상황을 크게 보고 조언한다", sub: "지금보다 다음 방향이 중요하다", scores: { dragonite: 2, charizard: 1 } }
+        ]
+      },
+      {
+        text: "팀 프로젝트에서 나는 어떤 역할에 가깝나요?",
+        hint: "가장 자주 맡는 포지션을 떠올려보세요.",
+        choices: [
+          { title: "앞에서 이끄는 리더", sub: "흐름을 잡고 추진하는 편이다", scores: { charizard: 2, lucario: 1 } },
+          { title: "분위기를 살리는 연결자", sub: "어색한 사이를 자연스럽게 만든다", scores: { pikachu: 2, eevee: 1 } },
+          { title: "묵묵히 완성도를 높이는 실무자", sub: "티가 덜 나도 결과물을 챙긴다", scores: { squirtle: 2, bulbasaur: 1 } },
+          { title: "남들이 놓친 아이디어를 내는 사람", sub: "다르게 보는 시선이 강점이다", scores: { gengar: 2, eevee: 1 } }
+        ]
+      },
+      {
+        text: "갑자기 계획이 바뀌면 나는?",
+        hint: "예상 밖 상황에서 보이는 태도를 골라주세요.",
+        choices: [
+          { title: "금방 적응해서 다른 방법을 찾는다", sub: "바뀌면 바뀐 대로 해보는 편이다", scores: { eevee: 2, dragonite: 1 } },
+          { title: "일단 침착하게 우선순위를 다시 잡는다", sub: "급할수록 정리가 먼저다", scores: { squirtle: 2, lucario: 1 } },
+          { title: "짜증은 나지만 정면 돌파한다", sub: "어차피 해야 하면 밀어붙인다", scores: { charizard: 2, pikachu: 1 } },
+          { title: "잠깐 멈추고 내 속도를 회복한다", sub: "무리하면 더 흔들린다", scores: { snorlax: 2, bulbasaur: 1 } }
+        ]
+      },
+      {
+        text: "내가 가장 좋아하는 칭찬은?",
+        hint: "들었을 때 가장 기분 좋아질 말을 선택하세요.",
+        choices: [
+          { title: "너랑 있으면 분위기가 밝아져", sub: "밝은 에너지를 인정받고 싶다", scores: { pikachu: 2, eevee: 1 } },
+          { title: "너는 믿고 맡길 수 있어", sub: "책임감과 안정감을 인정받고 싶다", scores: { lucario: 2, squirtle: 1 } },
+          { title: "너는 진짜 따뜻한 사람이야", sub: "배려와 다정함을 알아주면 좋다", scores: { bulbasaur: 2, snorlax: 1 } },
+          { title: "너는 존재감이 확실해", sub: "개성과 카리스마를 인정받고 싶다", scores: { charizard: 2, gengar: 1 } }
+        ]
+      },
+      {
+        text: "새로운 도전을 앞두고 나는?",
+        hint: "도전 직전의 마음가짐과 가장 가까운 것을 고르세요.",
+        choices: [
+          { title: "무섭지만 일단 시작해본다", sub: "움직이면서 답을 찾는 편이다", scores: { charizard: 2, pikachu: 1 } },
+          { title: "자료를 모으고 준비한 뒤 시작한다", sub: "준비가 되면 자신감이 생긴다", scores: { lucario: 2, squirtle: 1 } },
+          { title: "내 방식으로 새롭게 해석한다", sub: "똑같이 따라 하는 건 재미없다", scores: { gengar: 2, eevee: 1 } },
+          { title: "속도를 조절하며 오래 버틴다", sub: "천천히 가도 끝까지 가는 편이다", scores: { snorlax: 2, bulbasaur: 1 } }
+        ]
+      },
+      {
+        text: "사람들이 잘 모르는 나의 장점은?",
+        hint: "겉으로 잘 드러나지 않아도 내가 가진 힘을 골라주세요.",
+        choices: [
+          { title: "상황에 맞게 변하는 유연함", sub: "한 가지 모습으로만 정의되기 싫다", scores: { eevee: 2, gengar: 1 } },
+          { title: "힘든 사람을 챙기는 섬세함", sub: "작은 변화도 잘 알아차린다", scores: { bulbasaur: 2, snorlax: 1 } },
+          { title: "마지막까지 책임지는 끈기", sub: "조용해도 쉽게 포기하지 않는다", scores: { squirtle: 2, lucario: 1 } },
+          { title: "큰 그림을 보는 여유", sub: "지금보다 멀리 보는 편이다", scores: { dragonite: 2, charizard: 1 } }
+        ]
+      },
+      {
+        text: "나에게 가장 필요한 파트너는?",
+        hint: "함께할 때 가장 안정감을 줄 사람을 떠올려보세요.",
+        choices: [
+          { title: "나를 더 밖으로 끌어내는 사람", sub: "망설일 때 시작 버튼을 눌러준다", scores: { pikachu: 2, charizard: 1 } },
+          { title: "내 속도를 존중해주는 사람", sub: "편안한 호흡이 중요하다", scores: { snorlax: 2, bulbasaur: 1 } },
+          { title: "목표를 함께 정리해주는 사람", sub: "방향이 잡히면 더 강해진다", scores: { lucario: 2, squirtle: 1 } },
+          { title: "나의 독특함을 재밌어하는 사람", sub: "있는 그대로 받아주는 관계가 좋다", scores: { gengar: 2, eevee: 1 } }
+        ]
+      }
+    ];
+
+    const results = {
+      eevee: {
+        name: "이브이",
+        icon: "🦊",
+        types: ["가능성", "적응", "균형"],
+        one: "적응력이 좋고 다양한 가능성을 가진 타입입니다.",
+        desc: "당신은 상황에 따라 부드럽게 변할 줄 아는 사람입니다. 한 가지 모습으로 고정되기보다, 관계와 환경에 맞춰 새로운 가능성을 찾아냅니다. 선택지가 많을수록 더 빛나며, 변화 속에서도 자신만의 방향을 만들어가는 힘이 있습니다.",
+        keywords: ["유연함", "가능성", "공감력", "새로운 시작"],
+        moments: ["새로운 환경에 적응할 때", "여러 선택지 사이에서 길을 찾을 때", "사람 사이를 자연스럽게 이어줄 때"]
+      },
+      pikachu: {
+        name: "피카츄",
+        icon: "⚡",
+        types: ["활기", "친화력", "순간 집중"],
+        one: "밝은 에너지로 주변 분위기를 살리는 타입입니다.",
+        desc: "당신은 주변 사람에게 활력을 주는 사람입니다. 감정 표현이 비교적 솔직하고, 무거운 분위기를 가볍게 바꾸는 힘이 있습니다. 때로는 충동적으로 움직일 수 있지만, 그 빠른 반응력이 기회를 만들어냅니다.",
+        keywords: ["밝음", "재치", "친화력", "즉흥성"],
+        moments: ["어색한 분위기를 풀어야 할 때", "팀에 에너지가 필요할 때", "빠른 판단과 반응이 필요할 때"]
+      },
+      charizard: {
+        name: "리자몽",
+        icon: "🔥",
+        types: ["도전", "자존감", "추진력"],
+        one: "목표를 향해 정면으로 나아가는 도전형 타입입니다.",
+        desc: "당신은 해야겠다고 마음먹으면 강하게 밀고 나가는 사람입니다. 승부욕과 자존심이 있어 쉽게 물러서지 않습니다. 다만 감정이 앞설 때가 있어, 속도를 조절하면 더 큰 영향력을 보여줄 수 있습니다.",
+        keywords: ["열정", "추진력", "승부욕", "존재감"],
+        moments: ["중요한 도전을 앞뒀을 때", "누군가 앞에서 이끌어야 할 때", "포기하지 않는 힘이 필요할 때"]
+      },
+      squirtle: {
+        name: "꼬부기",
+        icon: "💧",
+        types: ["침착", "꾸준함", "실무력"],
+        one: "차분하게 상황을 정리하고 끝까지 해내는 타입입니다.",
+        desc: "당신은 급한 상황에서도 흐름을 정리하려는 사람입니다. 말보다 행동으로 신뢰를 쌓고, 작은 일을 꾸준히 완성하는 능력이 강합니다. 눈에 띄는 역할이 아니어도 결과물의 중심을 단단히 잡아줍니다.",
+        keywords: ["침착함", "책임감", "성실함", "정리력"],
+        moments: ["복잡한 일을 단계별로 풀어야 할 때", "팀의 완성도를 높여야 할 때", "꾸준한 노력이 필요한 목표를 세울 때"]
+      },
+      bulbasaur: {
+        name: "이상해씨",
+        icon: "🌱",
+        types: ["다정함", "성장", "회복"],
+        one: "천천히 주변을 돌보며 함께 성장하는 타입입니다.",
+        desc: "당신은 조용하지만 따뜻한 영향력을 가진 사람입니다. 상대의 작은 변화도 잘 알아차리고, 무리하게 앞서가기보다 함께 자라는 방식을 좋아합니다. 느려 보여도 시간이 지날수록 단단한 힘을 보여줍니다.",
+        keywords: ["배려", "성장", "안정감", "섬세함"],
+        moments: ["누군가에게 정서적 지지가 필요할 때", "천천히 관계를 쌓아갈 때", "지친 분위기를 회복시킬 때"]
+      },
+      gengar: {
+        name: "팬텀",
+        icon: "🌙",
+        types: ["개성", "재치", "반전 매력"],
+        one: "독특한 시선과 장난스러운 매력이 강한 타입입니다.",
+        desc: "당신은 평범한 방식보다 다른 관점에서 문제를 바라보는 사람입니다. 유머와 반전 매력이 있고, 남들이 놓친 부분을 포착하는 감각이 좋습니다. 가끔 속마음을 숨길 수 있지만, 편한 사람 앞에서는 누구보다 생생한 에너지를 보여줍니다.",
+        keywords: ["개성", "상상력", "유머", "예리함"],
+        moments: ["새로운 아이디어가 필요할 때", "분위기에 반전이 필요할 때", "남들과 다른 해결책을 찾아야 할 때"]
+      },
+      snorlax: {
+        name: "잠만보",
+        icon: "💤",
+        types: ["여유", "안정", "회복력"],
+        one: "편안한 속도로 오래 버티는 안정형 타입입니다.",
+        desc: "당신은 무리하게 달리기보다 자신의 리듬을 지키는 사람입니다. 주변을 편안하게 만드는 힘이 있고, 쉽게 흔들리지 않는 안정감을 줍니다. 필요한 순간에는 묵직하게 움직이며 오래 버티는 강점이 있습니다.",
+        keywords: ["여유", "편안함", "지속력", "회복"],
+        moments: ["긴 호흡으로 버텨야 할 때", "주변에 안정감이 필요할 때", "속도보다 지속이 중요한 일을 할 때"]
+      },
+      lucario: {
+        name: "루카리오",
+        icon: "🛡️",
+        types: ["신념", "분석", "집중"],
+        one: "원칙과 목표를 세우고 정확하게 나아가는 타입입니다.",
+        desc: "당신은 감정만으로 움직이기보다 이유와 방향을 중요하게 생각하는 사람입니다. 책임감이 강하고, 한 번 맡은 일은 끝까지 완성하려고 합니다. 스스로에게 엄격할 수 있지만, 그 집중력이 높은 신뢰로 이어집니다.",
+        keywords: ["책임감", "집중력", "분석력", "신뢰"],
+        moments: ["중요한 결정을 내려야 할 때", "목표를 구체적으로 세워야 할 때", "팀에 기준과 방향이 필요할 때"]
+      },
+      dragonite: {
+        name: "망나뇽",
+        icon: "🌊",
+        types: ["넓은 시야", "보호", "모험"],
+        one: "큰 그림을 보며 사람을 품는 든든한 타입입니다.",
+        desc: "당신은 당장의 감정보다 전체 흐름을 보는 사람입니다. 가까운 사람을 챙기는 보호 본능이 있고, 새로운 세계를 향한 호기심도 큽니다. 부드럽지만 필요할 때는 누구보다 든든한 힘을 보여줍니다.",
+        keywords: ["넓은 시야", "보호력", "모험심", "포용력"],
+        moments: ["큰 방향을 잡아야 할 때", "누군가를 지켜줘야 할 때", "새로운 세계로 나아가야 할 때"]
+      }
+    };
+
+    const startBtn = document.getElementById("startBtn");
+    const quizWindow = document.getElementById("quizWindow");
+    const resultWindow = document.getElementById("resultWindow");
+    const resultArea = document.getElementById("resultArea");
+    const qNumber = document.getElementById("qNumber");
+    const questionText = document.getElementById("questionText");
+    const questionHint = document.getElementById("questionHint");
+    const choicesEl = document.getElementById("choices");
+    const progress = document.getElementById("progress");
+    const windowTitle = document.getElementById("windowTitle");
+    const backBtn = document.getElementById("backBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const toast = document.getElementById("toast");
+
+    let current = 0;
+    let answers = [];
+    let currentResult = null;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function startQuiz() {
+      current = 0;
+      answers = [];
+      currentResult = null;
+      resultWindow.classList.remove("active");
+      resultArea.classList.remove("active");
+      quizWindow.classList.add("active");
+      renderQuestion();
+      quizWindow.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function renderQuestion() {
+      const q = questions[current];
+      qNumber.textContent = `QUESTION ${String(current + 1).padStart(2, "0")}`;
+      questionText.textContent = q.text;
+      questionHint.textContent = q.hint;
+      windowTitle.textContent = `${current + 1} / ${questions.length} 문항 진행 중`;
+      progress.style.width = `${(current / questions.length) * 100}%`;
+      backBtn.style.visibility = current === 0 ? "hidden" : "visible";
+
+      choicesEl.innerHTML = "";
+      q.choices.forEach((choice, index) => {
+        const btn = document.createElement("button");
+        btn.className = "choice";
+        btn.type = "button";
+        btn.innerHTML = `<strong>${choice.title}</strong><span>${choice.sub}</span>`;
+        btn.addEventListener("click", () => selectChoice(index));
+        choicesEl.appendChild(btn);
+      });
+    }
+
+    function selectChoice(choiceIndex) {
+      answers[current] = questions[current].choices[choiceIndex];
+      if (current < questions.length - 1) {
+        current += 1;
+        renderQuestion();
+      } else {
+        progress.style.width = "100%";
+        showResult();
+      }
+    }
+
+    function goBack() {
+      if (current > 0) {
+        current -= 1;
+        renderQuestion();
+      }
+    }
+
+    function calculateResult() {
+      const score = Object.keys(results).reduce((acc, key) => {
+        acc[key] = 0;
+        return acc;
+      }, {});
+
+      answers.forEach(answer => {
+        Object.entries(answer.scores).forEach(([key, value]) => {
+          score[key] += value;
+        });
+      });
+
+      const sorted = Object.entries(score).sort((a, b) => b[1] - a[1]);
+      return sorted[0][0];
+    }
+
+    function showResult() {
+      const resultKey = calculateResult();
+      currentResult = results[resultKey];
+      quizWindow.classList.remove("active");
+      resultWindow.classList.add("active");
+      resultArea.classList.add("active");
+
+      document.getElementById("monsterIcon").textContent = currentResult.icon;
+      document.getElementById("resultName").textContent = currentResult.name;
+      document.getElementById("resultOne").textContent = currentResult.one;
+      document.getElementById("resultTitle").textContent = `당신과 어울리는 포켓몬은 ${currentResult.name}입니다.`;
+      document.getElementById("resultDesc").textContent = currentResult.desc;
+
+      const typeChips = document.getElementById("typeChips");
+      typeChips.innerHTML = currentResult.types.map(type => `<span class="type-chip">${type}</span>`).join("");
+
+      const keywordList = document.getElementById("keywordList");
+      keywordList.innerHTML = currentResult.keywords.map(item => `<li>${item}</li>`).join("");
+
+      const momentList = document.getElementById("momentList");
+      momentList.innerHTML = currentResult.moments.map(item => `<li>${item}</li>`).join("");
+
+      resultWindow.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
+      const words = text.split(" ");
+      let line = "";
+      const lines = [];
+
+      for (let i = 0; i < words.length; i++) {
+        const testLine = line + words[i] + " ";
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && i > 0) {
+          lines.push(line.trim());
+          line = words[i] + " ";
+        } else {
+          line = testLine;
+        }
+      }
+      lines.push(line.trim());
+
+      lines.forEach((item, index) => {
+        ctx.fillText(item, x, y + index * lineHeight);
+      });
+      return y + lines.length * lineHeight;
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function drawPixelLeaves(ctx) {
+      const leafColors = ["#f0cc52", "#d88428", "#b84a2f", "#fff4a6"];
+      for (let i = 0; i < 90; i++) {
+        const x = Math.floor(Math.random() * 950) + 65;
+        const y = Math.floor(Math.random() * 1080) + 80;
+        const size = [9, 12, 15, 18][Math.floor(Math.random() * 4)];
+        ctx.fillStyle = leafColors[Math.floor(Math.random() * leafColors.length)];
+        ctx.fillRect(x, y, size, size);
+      }
+    }
+
+    function saveResultCard() {
+      if (!currentResult) return;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 1080;
+      canvas.height = 1350;
+      const ctx = canvas.getContext("2d");
+
+      const bg = ctx.createLinearGradient(0, 0, 0, 1350);
+      bg.addColorStop(0, "#6f8f87");
+      bg.addColorStop(0.32, "#efcc52");
+      bg.addColorStop(0.68, "#df862f");
+      bg.addColorStop(1, "#9d4a2e");
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, 1080, 1350);
+
+      drawPixelLeaves(ctx);
+
+      ctx.fillStyle = "rgba(49,68,82,0.28)";
+      roundRect(ctx, 115, 110, 850, 1110, 54);
+      ctx.fill();
+
+      ctx.fillStyle = "#fff9df";
+      roundRect(ctx, 95, 90, 850, 1110, 54);
+      ctx.fill();
+      ctx.lineWidth = 12;
+      ctx.strokeStyle = "#314452";
+      ctx.stroke();
+
+      ctx.fillStyle = "#314452";
+      roundRect(ctx, 150, 145, 780, 88, 28);
+      ctx.fill();
+      ctx.fillStyle = "#fff4c7";
+      ctx.font = "900 34px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("MY POKE PERSONALITY", 540, 202);
+
+      ctx.fillStyle = "#fff4c7";
+      roundRect(ctx, 350, 285, 380, 300, 42);
+      ctx.fill();
+      ctx.lineWidth = 10;
+      ctx.strokeStyle = "#314452";
+      ctx.stroke();
+
+      ctx.font = "140px sans-serif";
+      ctx.fillStyle = "#27313a";
+      ctx.fillText(currentResult.icon, 540, 485);
+
+      ctx.font = "900 78px sans-serif";
+      ctx.fillStyle = "#314452";
+      ctx.fillText(currentResult.name, 540, 680);
+
+      ctx.fillStyle = "#e99735";
+      roundRect(ctx, 170, 725, 740, 115, 30);
+      ctx.fill();
+      ctx.lineWidth = 7;
+      ctx.strokeStyle = "#314452";
+      ctx.stroke();
+
+      ctx.fillStyle = "#fffdf0";
+      ctx.font = "800 32px sans-serif";
+      wrapCanvasText(ctx, currentResult.one, 540, 775, 650, 42);
+
+      ctx.fillStyle = "#314452";
+      ctx.font = "900 34px sans-serif";
+      ctx.fillText("성격 설명", 540, 920);
+
+      ctx.fillStyle = "#4f5d55";
+      ctx.font = "700 27px sans-serif";
+      const descY = wrapCanvasText(ctx, currentResult.desc, 180, 975, 720, 42);
+
+      const chipStartX = 540 - (currentResult.types.length * 165 - 18) / 2;
+      currentResult.types.forEach((type, index) => {
+        const x = chipStartX + index * 165;
+        ctx.fillStyle = "#fff4c7";
+        roundRect(ctx, x, 1100, 145, 54, 26);
+        ctx.fill();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "#314452";
+        ctx.stroke();
+        ctx.fillStyle = "#314452";
+        ctx.font = "900 24px sans-serif";
+        ctx.fillText(type, x + 72, 1136);
+      });
+
+      ctx.fillStyle = "rgba(49,68,82,0.72)";
+      ctx.font = "800 22px sans-serif";
+      ctx.fillText("포켓몬 성격 연구소 · Autumn Pixel Test", 540, 1260);
+
+      const link = document.createElement("a");
+      link.download = `poke-personality-${currentResult.name}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      showToast("결과 카드 이미지가 저장되었습니다");
+    }
+
+    async function copyResultText() {
+      if (!currentResult) return;
+      const text = `당신과 어울리는 포켓몬은 ${currentResult.name}입니다.\n${currentResult.one}\n#포켓몬성격테스트`;
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("결과 문구를 복사했습니다");
+      } catch (error) {
+        showToast("복사 기능을 사용할 수 없습니다");
+      }
+    }
+
+    startBtn.addEventListener("click", startQuiz);
+    backBtn.addEventListener("click", goBack);
+    restartBtn.addEventListener("click", startQuiz);
+    saveBtn.addEventListener("click", saveResultCard);
+    copyBtn.addEventListener("click", copyResultText);
+  </script>
+</body>
+</html>
