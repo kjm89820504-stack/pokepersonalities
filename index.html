@@ -969,9 +969,112 @@
         font-size: 42px;
       }
     }
+
+
+    .bgm-controls {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border: 3px solid #314452;
+      border-radius: 999px;
+      background: rgba(255, 249, 223, 0.96);
+      box-shadow: 6px 7px 0 rgba(49, 68, 82, 0.24);
+    }
+
+    .bgm-label {
+      padding: 0 4px;
+      color: #314452;
+      font-size: 12px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .bgm-btn {
+      border: 3px solid #314452;
+      border-radius: 999px;
+      padding: 8px 11px;
+      background: #fff4c7;
+      color: #314452;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 3px 4px 0 rgba(49, 68, 82, 0.18);
+      transition: transform 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
+    }
+
+    .bgm-btn:hover {
+      transform: translate(-1px, -1px);
+      background: #ffe88f;
+      box-shadow: 4px 5px 0 rgba(49, 68, 82, 0.2);
+    }
+
+    .bgm-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 2px 0 rgba(49, 68, 82, 0.22);
+    }
+
+    .bgm-btn.active {
+      background: #314452;
+      color: #fff8d0;
+    }
+
+    .bgm-player-wrap {
+      position: fixed;
+      left: -40px;
+      bottom: -40px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bgm-player-wrap iframe {
+      width: 1px;
+      height: 1px;
+      border: 0;
+    }
+
+    @media (max-width: 560px) {
+      .bgm-controls {
+        top: 10px;
+        right: 10px;
+        gap: 5px;
+        padding: 7px;
+        transform: scale(0.9);
+        transform-origin: top right;
+      }
+
+      .bgm-label {
+        display: none;
+      }
+
+      .bgm-btn {
+        padding: 7px 9px;
+        font-size: 11px;
+      }
+    }
+
   </style>
 </head>
 <body>
+
+  <div class="bgm-controls" aria-label="배경음악 조절">
+    <span class="bgm-label">♪ 인주시티 BGM</span>
+    <button class="bgm-btn" id="bgmOnBtn" type="button">BGM 켜기</button>
+    <button class="bgm-btn" id="bgmOffBtn" type="button">BGM 끄기</button>
+  </div>
+
+  <div class="bgm-player-wrap" aria-hidden="true">
+    <iframe id="bgmPlayer" title="인주시티 BGM" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+
   <div class="pixel-sky" aria-hidden="true"></div>
   <div class="trees" aria-hidden="true"></div>
 
@@ -1585,6 +1688,38 @@
       saveResultCard().catch(() => showToast("이미지 저장 중 오류가 발생했습니다"));
     });
     copyBtn.addEventListener("click", copyResultText);
+
+
+    const bgmOnBtn = document.getElementById("bgmOnBtn");
+    const bgmOffBtn = document.getElementById("bgmOffBtn");
+    const bgmPlayer = document.getElementById("bgmPlayer");
+    const bgmVideoId = "eZbWmIZenZ4";
+    let isBgmPlaying = false;
+
+    function setBgmButtonState(isPlaying) {
+      isBgmPlaying = isPlaying;
+      bgmOnBtn.classList.toggle("active", isPlaying);
+      bgmOffBtn.classList.toggle("active", !isPlaying);
+      bgmOnBtn.setAttribute("aria-pressed", String(isPlaying));
+      bgmOffBtn.setAttribute("aria-pressed", String(!isPlaying));
+    }
+
+    function playBgm() {
+      const bgmUrl = `https://www.youtube.com/embed/${bgmVideoId}?autoplay=1&loop=1&playlist=${bgmVideoId}&controls=0&modestbranding=1&rel=0&playsinline=1`;
+      bgmPlayer.src = bgmUrl;
+      setBgmButtonState(true);
+      showToast("인주시티 BGM을 재생합니다");
+    }
+
+    function stopBgm() {
+      bgmPlayer.src = "";
+      setBgmButtonState(false);
+      showToast("BGM을 껐습니다");
+    }
+
+    bgmOnBtn.addEventListener("click", playBgm);
+    bgmOffBtn.addEventListener("click", stopBgm);
+    setBgmButtonState(false);
   </script>
 </body>
 </html>
